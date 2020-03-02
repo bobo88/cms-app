@@ -21,17 +21,17 @@
     <div class="bottom-box">
       <el-row :gutter="20">
         <el-col :span="6">
-          <div class="grid-content bg-purple">
+          <div class="grid-content bg-purple" @click="refreshData">
             <span class="el-icon-refresh icon-item inline-block f60"></span>
           </div>
         </el-col>
         <el-col :span="6">
-          <div class="grid-content bg-purple">
+          <div class="grid-content bg-purple" @click="passed">
             <span class="el-icon-circle-check icon-item inline-block f60"></span>
           </div>
         </el-col>
         <el-col :span="6">
-          <div class="grid-content bg-purple">
+          <div class="grid-content bg-purple" @click="noPassed">
             <span class="el-icon-circle-close icon-item inline-block f60"></span>
           </div>
         </el-col>
@@ -41,10 +41,6 @@
           </div>
         </el-col>
       </el-row>
-      
-      <!-- <div class="w300 lh60 inline-block"> -->
-        <!-- <el-button class="w100Percent vt" size="small" type="primary" @click="loginOutOprate">退出登录</el-button> -->
-      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -61,10 +57,12 @@ export default {
         muted: false,
         language: 'en',
         playbackRates: [0.7, 1.0, 1.5, 2.0],
-        sources: [{
-          type: 'video/mp4',
-          src: 'https://cdn.palm-chat.com/V/9e3669a2-5c80-4f3e-a4c7-c60f67f3d2ca_z.mp4'
-        }],
+        sources: [
+          // {
+          //   type: 'video/mp4',
+          //   src: 'https://cdn.palm-chat.com/V/9e3669a2-5c80-4f3e-a4c7-c60f67f3d2ca_z.mp4'
+          // }
+        ],
         poster: '/static/images/author.jpg',
         controlBar: {
           timeDivider: true,
@@ -73,6 +71,8 @@ export default {
           fullscreenToggle: true
         }
       },
+      videoList: [],
+      currentVideoIndex: 0,
       prevItem: '',
       nextItem: ''
     }
@@ -82,6 +82,8 @@ export default {
     this.getReviewVideoListData();
   },
   computed: {
+    // this.$refs.videoPlayer.player.play();
+    // this.$refs.videoPlayer.player.pause();
     player () {
       return this.$refs.videoPlayer.player
     }
@@ -91,7 +93,14 @@ export default {
       let options = {"pageIndex":1,"pageSize":10,"recommend":0,"startTime":0,"endTime":0,"id":0,"vskitId":"","videoId":"","musicId":"","activityId":"","videoStatus":2};
       let data = await this.$Api.getReviewVideoListData(options);
       console.log(data)
-      this.$message.success('获取列表成功！');
+      if (data.code === 0) {
+        this.videoList = data.data.dataList;
+        // 视频初始化
+        this.videoInit(0);
+        this.$message.success('获取列表成功！');
+      } else {
+        this.$message.error('获取列表失败！');
+      }
     },
     async loginOutOprate () {
       this.$Api.getLoginOutData({}, {
@@ -114,6 +123,35 @@ export default {
       // let options = {"username":"Vadmin","password":"VsKiT201803#"};
       // let data = await this.$Api.getLoginOutData(options);
       // console.log(data)
+    },
+    // 初始化视频，默认展示数据列表第一个视频
+    videoInit (index) {
+      this.playerOptions.sources = [{
+        type: 'video/mp4',
+        src: this.videoList[index].videoUrl
+      }];
+    },
+    // 刷新视频列表数据
+    refreshData () {
+      this.getReviewVideoListData();
+    },
+    // 审核通过
+    passed () {
+      this.oprateFun(0);
+    },
+    // 审核不通过
+    noPassed () {
+      this.oprateFun(1);
+    },
+    // 审核 通过 / 不通过
+    oprateFun (type) {
+      if (this.currentVideoIndex < this.videoList.length - 1) {
+        type === 0 ? this.$message.success('审核通过') : this.$message.error('审核不通过');
+        this.currentVideoIndex ++;
+        this.videoInit(this.currentVideoIndex);
+      } else {
+        this.$message.error('当前视频是最后一个视频，请点击刷新按钮进行数据更新！');
+      }
     },
     // listen event
     onPlayerPlay (player) {
