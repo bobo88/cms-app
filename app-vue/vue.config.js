@@ -44,6 +44,7 @@ module.exports = {
   // webpack配置
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
   chainWebpack: () => {},
+  //  将接收ChainableConfig由webpack-chain提供支持的实例的函数。
   configureWebpack: config => {
     // config.externals = {
     //   'vue': 'Vue',
@@ -74,20 +75,11 @@ module.exports = {
   devServer: {
     hotOnly:true,
     proxy: {
-      "/vskit/": {
-        target: "https://vskit-log.vskit.tv/",
-        secure: false,
-        // pathRewrite: {
-        //   "^/vskit/": ""
-        // },
-        changeOrigin: true,
-        logLevel: "debug"
-      },
-      "/test": {
-        target: "http://127.0.0.1:9090",
+      '/prevApi': {
+        target: 'http://120.79.151.52:9093/vskit/',
         changeOrigin: true,
         pathRewrite: {
-              '^/test': '/'
+          '^/prevApi': '/'
         }
       }
     }

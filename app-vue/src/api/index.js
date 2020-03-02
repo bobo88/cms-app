@@ -7,14 +7,14 @@ export default {
    * @param {}
    */
   getLoginData (options) {
-    return post('/prevApi/login/vskit-cms-shiro-server', options)
+    return post('/login/vskit-cms-shiro-server', options)
   },
   /**
    * 后台管理退出登录
    * @param {}
    */
   getLoginOutData (options) {
-    return post('game/user/logOut', options)
+    return post('/logout/vskit-cms-shiro-server', options)
   },
 
   // --------------------------------------- 公用接口 ------------------------------------------------------
@@ -29,6 +29,16 @@ export default {
    * 首页 - 获取视频审核列表
    */
   getReviewVideoListData (options) {
-    return post('/prevApi/api/vskit-cms-shiro-server/video/getlist', options)
+    return post('/api/vskit-cms-shiro-server/video/getlist', options)
+  },
+  getAllCountry () {
+    return get('/api/country/all');
+  },
+  // ************************ 版本管理 *******************************
+  getVersionInfoListData(options) {
+    return post('/api/app/version/list', options);
+  },
+  getVersionInfoAllData(options) {
+    return post('/api/app/version/all', options);
   }
 }

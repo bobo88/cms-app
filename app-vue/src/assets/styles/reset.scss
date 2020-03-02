@@ -1,104 +1,22 @@
-#app {
-  .mint-cell {
-    .mint-cell-wrapper {
-      height: 40px;
-      ::-webkit-input-placeholder {
-        color: #cccccc;
-        font-size: 32px;
-        line-height: 60px;
-      }
-      .mint-cell-value {
-        .mint-field-core {
-          line-height: 28px;
-          font-size: 28px;
-      
-        }
-        .mintui-field-error {
-          font-size: 40px;
-        }
-      }
-    }
-    .mint-cell-title {
-      width: 140px;
-      .mint-cell-text {
-        font-size: 28px;
-      }
-    }
-  }
-  .mint-loadmore-top {
-    margin-top: -60px;
-    .mint-loadmore-text {
-      font-weight: 600;
-      font-size: 28px;
-      color: #999999;
-    }
-  }
-  .mint-loadmore-bottom {
-    .mint-loadmore-text {
-      font-size: 28px;
+.video-js {
+  width: 100% !important;
+  height: 100% !important;
+}
+.el-input {
+  &.el-input--small {
+    .el-input__inner {
+      height: 60px;
+      line-height: 60px;
     }
   }
 }
 
-#appBody {
-  .mint-toast {
-    width: 640px;
-  }
-  .mint-toast-text {
-    font-size: 28px;
-  }
-  .mint-indicator-mask {
-    z-index: 49;
-  }
-  .mint-indicator {
-    .mint-indicator-wrapper {
-      width: 240px;
-      z-index: 50;
-      .mint-indicator-text {
-        font-size: 28px;
-      }
+.el-button {
+  &.el-button--primary {
+    &.el-button--small {
+      padding: 10px;
+      height: 60px;
+      line-height: 40px;
     }
-  }
-  .mint-toast.is-placebottom, .mint-toast.is-placemiddle {
-    transform: translate(0, 0);
-    margin-left: -288px;
-  }
-
-  .mint-msgbox {
-    width: 80%;
-    font-size: 28px;
-   
-    border-radius: 16px;
-    .mint-msgbox-header {
-      height: 70px;
-      line-height: 70px;
-      .mint-msgbox-title{
-        font-size: 36px;
-      }
-    }
-    .mint-msgbox-content {
-      padding: 30px;
-      .mint-msgbox-message {
-        color: rgb(39, 37, 37);
-      }
-    }
-    .mint-msgbox-btns {
-      height: 80px;
-      line-height: 80px;
-      .mint-msgbox-btn{
-        line-height: 80px;
-        font-size: 30px;
-  
-      }
-      .mint-msgbox-confirm {
-        color: #000;
-        font-weight: 500;
-      }
-    }
-    
-  }
-
-  .picker-items .picker-item {
-    font-size: 28px;
   }
 }

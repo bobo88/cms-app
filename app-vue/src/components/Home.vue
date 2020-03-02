@@ -17,6 +17,12 @@
           @canplay="onPlayerCanplay($event)"
           @canplaythrough="onPlayerCanplaythrough($event)" -->
     </video-player>
+
+    <div class="bottom-box">
+      <div class="w300 lh60 inline-block">
+        <el-button class="w100Percent" size="small" type="primary" @click="loginOutOprate">退出登录</el-button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -49,7 +55,7 @@ export default {
     }
   },
   created() {
-    this.loginTest();
+    // this.loginTest();
     this.getReviewVideoListData();
   },
   computed: {
@@ -64,10 +70,27 @@ export default {
       console.log(data)
       window.$messageBox({message: '获取列表成功！'});
     },
-    async loginTest () {
-      let options = {"username":"Vadmin","password":"VsKiT201803#"};
-      let data = await this.$Api.getLoginData(options);
-      console.log(data)
+    async loginOutOprate () {
+      this.$Api.getLoginOutData({}, {
+        headers: {
+          'x-auth-token': this.$store.getters[this.Constant.GET_USER_TOKEN]
+        }
+      }).then(data => {
+        if (parseInt(data.code) === 0) {
+          // 退出登录后，删除cookie，跳转到登录页面
+          this.$store.commit(this.Constant.DELETE_LOGIN_DATA)
+          window.$messageBox({message: '退出登录成功！'});
+          this.$router.push({
+            name: 'login',
+             'params': { 'urlType': 0}
+            })
+        } else {
+          this.$message.error(data.desc);
+        }
+      });
+      // let options = {"username":"Vadmin","password":"VsKiT201803#"};
+      // let data = await this.$Api.getLoginOutData(options);
+      // console.log(data)
     },
     // listen event
     onPlayerPlay (player) {
@@ -98,5 +121,15 @@ export default {
   .home{
     width: 100% !important;
     height: 100% !important;
+  }
+  .bottom-box {
+    position: fixed;
+    z-index: 9999;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background: #f00;
   }
 </style>
