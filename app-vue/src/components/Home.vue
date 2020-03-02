@@ -19,9 +19,32 @@
     </video-player>
 
     <div class="bottom-box">
-      <div class="w300 lh60 inline-block">
-        <el-button class="w100Percent" size="small" type="primary" @click="loginOutOprate">退出登录</el-button>
-      </div>
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <div class="grid-content bg-purple">
+            <span class="el-icon-refresh icon-item inline-block f60"></span>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="grid-content bg-purple">
+            <span class="el-icon-circle-check icon-item inline-block f60"></span>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="grid-content bg-purple">
+            <span class="el-icon-circle-close icon-item inline-block f60"></span>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="grid-content bg-purple" @click="loginOutOprate">
+            <span class="el-icon-right icon-item inline-block f60"></span>
+          </div>
+        </el-col>
+      </el-row>
+      
+      <!-- <div class="w300 lh60 inline-block"> -->
+        <!-- <el-button class="w100Percent vt" size="small" type="primary" @click="loginOutOprate">退出登录</el-button> -->
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -68,7 +91,7 @@ export default {
       let options = {"pageIndex":1,"pageSize":10,"recommend":0,"startTime":0,"endTime":0,"id":0,"vskitId":"","videoId":"","musicId":"","activityId":"","videoStatus":2};
       let data = await this.$Api.getReviewVideoListData(options);
       console.log(data)
-      window.$messageBox({message: '获取列表成功！'});
+      this.$message.success('获取列表成功！');
     },
     async loginOutOprate () {
       this.$Api.getLoginOutData({}, {
@@ -79,7 +102,7 @@ export default {
         if (parseInt(data.code) === 0) {
           // 退出登录后，删除cookie，跳转到登录页面
           this.$store.commit(this.Constant.DELETE_LOGIN_DATA)
-          window.$messageBox({message: '退出登录成功！'});
+          this.$message.success('退出登录成功！');
           this.$router.push({
             name: 'login',
              'params': { 'urlType': 0}
@@ -117,7 +140,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <!-- <style src='../assets/styles/home.scss' lang="scss" scoped></style> -->
-<style scoped>
+<style lang="scss" scoped>
   .home{
     width: 100% !important;
     height: 100% !important;
@@ -128,8 +151,15 @@ export default {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 60px;
+    height: 90px;
+    padding: 15px 0;
     line-height: 60px;
-    background: #f00;
+    background: #2e324b;
+    .icon-item {
+      display: inline-block;
+      width: 100%;
+      color: #fff;
+      text-align: center;
+    }
   }
 </style>

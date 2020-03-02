@@ -46,6 +46,10 @@ export default {
         username: this.username,
         password: this.password
       };
+      if (!this.username || !this.password) {
+        this.$message.error('Please enter the complete user name and password');
+        return false;
+      }
       let data = await this.$Api.getLoginData(options);
 			console.log(data)
 			if (data.code === 0) {
