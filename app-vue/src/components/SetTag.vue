@@ -1,96 +1,42 @@
 <template>
-  <div class="login">
-    <p class="logo mb10">
-      <img src="@/assets/logo.png" alt="">
-    </p>
-    <div class="mb10 pr20 pl20 tc lh60">
-      <span class="f20 pr10 inline-block lh60 w100 vm">用户名</span>
-      <div class="w300 lh60 inline-block vm">
-        <el-input class="lh60 inline-block vt" v-model="username" size="small" placeholder="Username"></el-input>
-      </div>
-    </div>
-
-    <div class="mb10 pr20 pl20 tc lh60">
-      <span class="f20 pr10 inline-block lh60 w100 vm">密码</span>
-      <div class="w300 lh60 inline-block vm">
-        <el-input class="lh60 inline-block vt" placeholder="Password" size="small" v-model="password" show-password></el-input>
-      </div>
-    </div>
-
-    <div class="mb10 pr20 pl20 tc lh60">
-      <div class="w400 lh60 inline-block">
-        <el-button class="w100Percent" size="small" type="primary" @click="loginOprate">登录</el-button>
-      </div>
-    </div>
-
+  <div class="set-tag">
+   	<el-dialog
+			title="提示"
+			:visible.sync="dialogVisible"
+			width="30%"
+			:before-close="handleClose">
+			<span>这是一段信息</span>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="dialogVisible = false">取 消</el-button>
+				<el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+			</span>
+		</el-dialog>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'login',
+	name: 'set-tag',
+	props: ['dataItem'],
   data () {
     return {
-      // Vadmin
-      username: '',
-      // VsKiT201803#
-      password: ''
+      dialogVisible: false
     }
   },
   created() {
-    // this.loginOprate();
+    // this.dialogVisible = this.dataVisible;
   },
   methods: {
-    async loginOprate () {
-      let options = {
-        username: this.username,
-        password: this.password
-      };
-      if (!this.username || !this.password) {
-        this.$message.error('Please enter the complete user name and password');
-        return false;
-      }
-      let data = await this.$Api.getLoginData(options);
-			console.log(data)
-			if (data.code === 0) {
-				const _data = data.data;
-        this.$cookie.set('token', _data.token);
-        
-        let loginData = {};
-        loginData.UserName = this.username;
-        this.username = '';
-        this.password = '';
-        this.$store.commit(this.Constant.SET_LOGIN_DATA, loginData);
-        this.$router.push({ name: 'home' });
-        this.$store.dispatch(this.Constant.GET_ALL_COUNTRY_ASYNC);
-        this.$store.dispatch(this.Constant.GET_ALL_VERSION_ASYNC);
-				// window.$messageBox({message: '登陆成功'});
-			}
-    }
+		show () {
+			this.dialogVisible = true;
+		},
+		hide () {},
+		handleClose () {}
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .login {
-    position: fixed;
-    z-index: 99;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 500px;
-    margin: auto;
-  }
-  .logo {
-    height: 80px;
-    text-align: center;
-    img {
-      display: inline-block;
-      width: 80px;
-      height: 80px;
-    }
-  }
+  
 </style>

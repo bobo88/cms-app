@@ -38,6 +38,20 @@ export default {
   deleteVideo (options) {
     return post('/api/vskit-cms-shiro-server/review/delete', options)
   },
+  /**
+   * 内容管理 - 内容草稿库 - 内容审核 - 审核通过
+   * @return {[type]} [description]
+   */
+  passVideo (options) {
+    return post('/api/vskit-cms-shiro-server/review/pass', options)
+  },
+  /**
+   * 内容管理 - 内容草稿库 - 内容审核 - 保存审核视频的用户
+   * @param {}
+   */
+  saveVideoUserApproveData (options) {
+    return get('/api/vskit-cms-shiro-server/video/approve/user/save', options);
+  },
   getAllCountry () {
     return get('/api/country/all');
   },

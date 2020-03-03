@@ -74,14 +74,31 @@
         </el-col>
       </el-row>
     </div>
+
+    <el-dialog title="是否推荐该视频？" :visible.sync="centerDialogVisible" width="60%"
+      center>
+      <div class="tc">
+        <el-button size="mini" type="danger" @click="handleRecommend">推荐</el-button>
+        <el-button size="mini" type="primary" @click="handleNoRecommend">不推荐</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 设置标签 -->
+    <set-tag ref="setTagRef" :data-item="currentVideoItem"></set-tag>
   </div>
 </template>
 
 <script>
+import SetTag from '@/components/SetTag.vue'
 export default {
   name: 'home',
+  components: {
+    SetTag
+  },
   data () {
     return {
+      centerDialogVisible: false,
+      rowVideoId: '',
       playerOptions: {
         autoplay: true,
         loop: true,
@@ -170,7 +187,7 @@ export default {
     },
     // 设置标签
     setTag () {
-
+      this.$refs.setTagRef.show();
     },
     // 下一个视频（审核通过或者不通过）
     nextVideo () {
@@ -181,9 +198,54 @@ export default {
         this.refreshData();
       }
     },
+    // -------------------- 审核操作 ------------------------------
+    async ajaxPassVideo (options) {
+      let data = await this.$Api.passVideo(options);
+      if (parseInt(data.code) === 0 || parseInt(data.code) === 200) {
+        this.$message({
+          type: 'success',
+          message: '操作成功'
+        });
+        this.nextVideo();
+      } else {
+        if (parseInt(data.code) === 210110) {
+          this.$message.error('资源错误！');
+        }
+      }
+    },
+    // Ajax请求： 审核通过 保存审核用户
+    ajaxSaveVideoApproveUser (options) {
+      this.$Api.saveVideoUserApproveData(options)
+        .then();
+    },
     // 审核通过
     passed () {
-      this.oprateFun(0);
+      this.centerDialogVisible = true;
+      this.rowVideoId = this.currentVideoItem.videoId;
+      // this.oprateFun(0);
+    },
+    handleRecommend () {
+      this.ajaxPassVideo([{
+        recommend: 1,
+        videoId: this.rowVideoId
+      }]);
+      this.ajaxSaveVideoApproveUser({
+        videoId: this.rowVideoId,
+        // 审核操作类型 1: 仅审核 2: 审核以及推荐 3: 审核删除
+        type: 2
+      });
+      this.centerDialogVisible = false;
+    },
+    handleNoRecommend () {
+      this.ajaxPassVideo([{
+        recommend: 0,
+        videoId: this.rowVideoId
+      }]);
+      this.ajaxSaveVideoApproveUser({
+        videoId: this.rowVideoId,
+        type: 1 // 1 仅审核
+      });
+      this.centerDialogVisible = false;
     },
     // 审核不通过
     async noPassed () {
