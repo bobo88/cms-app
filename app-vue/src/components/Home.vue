@@ -75,8 +75,7 @@
       </el-row>
     </div>
 
-    <el-dialog title="是否推荐该视频？" :visible.sync="centerDialogVisible" width="60%"
-      center>
+    <el-dialog title="是否推荐该视频？" :visible.sync="centerDialogVisible" width="60%" center>
       <div class="tc">
         <el-button size="mini" type="danger" @click="handleRecommend">推荐</el-button>
         <el-button size="mini" type="primary" @click="handleNoRecommend">不推荐</el-button>
