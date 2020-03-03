@@ -31,6 +31,13 @@ export default {
   getReviewVideoListData (options) {
     return post('/api/vskit-cms-shiro-server/video/getlist', options)
   },
+  /**
+   * 内容管理 - 内容草稿库 - 内容审核 - 删除
+   * @return {[type]} [description]
+   */
+  deleteVideo (options) {
+    return post('/api/vskit-cms-shiro-server/review/delete', options)
+  },
   getAllCountry () {
     return get('/api/country/all');
   },

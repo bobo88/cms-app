@@ -14,6 +14,10 @@ import * as filters from './filters'
 import config from './config'
 import constant from './constant'
 
+// 跑马灯
+import MarqueeText from 'vue-marquee-text-component'
+Vue.component('marquee-text', MarqueeText)
+
 // require videojs style
 import 'video.js/dist/video-js.css'
 // import 'vue-video-player/src/custom-theme.css'

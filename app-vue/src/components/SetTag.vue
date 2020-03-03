@@ -19,7 +19,7 @@
 
     <div class="mb10 pr20 pl20 tc lh60">
       <div class="w400 lh60 inline-block">
-        <el-button class="w100Percent lh60" size="small" type="primary" @click="loginOprate">登录</el-button>
+        <el-button class="w100Percent" size="small" type="primary" @click="loginOprate">登录</el-button>
       </div>
     </div>
 

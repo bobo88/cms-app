@@ -14,9 +14,11 @@
 .el-button {
   &.el-button--primary {
     &.el-button--small {
-      padding: 10px;
-      height: 60px;
-      line-height: 40px;
+      &.lh60 {
+        padding: 10px;
+        height: 60px;
+        line-height: 40px;
+      }
     }
   }
 }

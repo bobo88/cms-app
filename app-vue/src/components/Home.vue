@@ -1,15 +1,15 @@
 <template>
   <div class="home">
     <video-player  class="video-player-box"
-       ref="videoPlayer"
-       :options="playerOptions"
-       :playsinline="true"
-       customEventName="customstatechangedeventname"
-       @play="onPlayerPlay($event)"
-       @pause="onPlayerPause($event)"
-       @statechanged="playerStateChanged($event)"
-       @ready="playerReadied">
-       <!-- @ended="onPlayerEnded($event)"
+      ref="videoPlayer"
+      :options="playerOptions"
+      :playsinline="true"
+      customEventName="customstatechangedeventname"
+      @play="onPlayerPlay($event)"
+      @pause="onPlayerPause($event)"
+      @statechanged="playerStateChanged($event)"
+      @ready="playerReadied">
+      <!-- @ended="onPlayerEnded($event)"
           @waiting="onPlayerWaiting($event)"
           @playing="onPlayerPlaying($event)"
           @loadeddata="onPlayerLoadeddata($event)"
@@ -18,11 +18,43 @@
           @canplaythrough="onPlayerCanplaythrough($event)" -->
     </video-player>
 
+    <div class="video-info">
+      <img :src="currentVideoItem.avatarUrl" class="avatar" alt="">
+      <div class="info-cont inline-block">
+        <div class="tag-box">
+          <div v-if="currentVideoItem.labelTitles && currentVideoItem.labelTitles.length > 0">
+            <span class="el-icon-s-flag vm"></span>
+            <marquee-text class="inline-block vm">
+              {{ currentVideoItem.labelTitles.join(', ') }}
+            </marquee-text>
+          </div>
+          
+          <!-- <el-tag v-if="currentVideoItem.categoryTitle">{{ currentVideoItem.categoryTitle }}</el-tag> -->
+          <!-- <el-tag v-if="currentVideoItem.secondTagsStr">{{ currentVideoItem.secondTagsStr }}</el-tag> -->
+          <!-- <el-tag v-if="currentVideoItem.labelTitles">{{ currentVideoItem.labelTitles }}</el-tag> -->
+        </div>
+        <p class="user-name" :class="{'userType-1': currentVideoItem.userType === 1}">
+          <span v-if="currentVideoItem.whiteType === 1" class="isWhiteUser el-icon-star-on"></span>
+          @{{ currentVideoItem.name }} 
+        </p>
+        <div class="video-title">
+          <el-tag effect="dark" v-if="currentVideoItem.categoryTitle" class="mr10">1. {{currentVideoItem.categoryTitle}}</el-tag>
+          <el-tag effect="dark" v-if="currentVideoItem.secondTagsStr" class="mr10" type="success">2. {{currentVideoItem.secondTagsStr}}</el-tag>
+          {{ currentVideoItem.title }}
+        </div>
+      </div>
+    </div>
+    
     <div class="bottom-box">
       <el-row :gutter="20">
-        <el-col :span="6">
+        <!-- <el-col :span="6">
           <div class="grid-content bg-purple" @click="refreshData">
             <span class="el-icon-refresh icon-item inline-block f60"></span>
+          </div>
+        </el-col> -->
+        <el-col :span="6">
+          <div class="grid-content bg-purple" @click="setTag">
+            <span class="el-icon-s-flag icon-item inline-block f60"></span>
           </div>
         </el-col>
         <el-col :span="6">
@@ -73,8 +105,7 @@ export default {
       },
       videoList: [],
       currentVideoIndex: 0,
-      prevItem: '',
-      nextItem: ''
+      currentVideoItem: {}
     }
   },
   created() {
@@ -90,7 +121,7 @@ export default {
   },
   methods: {
     async getReviewVideoListData () {
-      let options = {"pageIndex":1,"pageSize":10,"recommend":0,"startTime":0,"endTime":0,"id":0,"vskitId":"","videoId":"","musicId":"","activityId":"","videoStatus":2};
+      let options = {"pageIndex":1,"pageSize":50,"recommend":0,"startTime":0,"endTime":0,"id":0,"vskitId":"","videoId":"","musicId":"","activityId":"","videoStatus":2};
       let data = await this.$Api.getReviewVideoListData(options);
       console.log(data)
       if (data.code === 0) {
@@ -130,18 +161,53 @@ export default {
         type: 'video/mp4',
         src: this.videoList[index].videoUrl
       }];
+      this.currentVideoItem = Object.assign({}, this.videoList[index]);
     },
     // 刷新视频列表数据
     refreshData () {
+      this.currentVideoIndex = 0;
       this.getReviewVideoListData();
+    },
+    // 设置标签
+    setTag () {
+
+    },
+    // 下一个视频（审核通过或者不通过）
+    nextVideo () {
+      if (this.currentVideoIndex < this.videoList.length - 1) {
+        this.currentVideoIndex ++;
+        this.videoInit(this.currentVideoIndex);
+      } else {
+        this.refreshData();
+      }
     },
     // 审核通过
     passed () {
       this.oprateFun(0);
     },
     // 审核不通过
-    noPassed () {
-      this.oprateFun(1);
+    async noPassed () {
+      let videoId = this.currentVideoItem.videoId;
+      let callback = await this.$confirm(
+       '确认删除当前视频？',
+        '',
+        {
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No',
+          type: 'warning',
+          center: true
+        }
+      );
+      if (callback) {
+        let data = await this.$Api.deleteVideo([videoId]);
+        console.log(data)
+        if (data.code === 0) {
+          this.nextVideo();
+        } else {
+          this.$message.error('删除当前视频失败！');
+        }
+      }
+      // this.oprateFun(1);
     },
     // 审核 通过 / 不通过
     oprateFun (type) {
@@ -150,7 +216,8 @@ export default {
         this.currentVideoIndex ++;
         this.videoInit(this.currentVideoIndex);
       } else {
-        this.$message.error('当前视频是最后一个视频，请点击刷新按钮进行数据更新！');
+        // this.$message.error('当前视频是最后一个视频，请点击刷新按钮进行数据更新！');
+        this.refreshData();
       }
     },
     // listen event
@@ -165,7 +232,6 @@ export default {
     playerStateChanged (playerCurrentState) {
       // console.log('player current update state', playerCurrentState)
     },
-
     // player is ready
     playerReadied (player) {
       console.log('the player is readied', player)
@@ -180,8 +246,83 @@ export default {
 <!-- <style src='../assets/styles/home.scss' lang="scss" scoped></style> -->
 <style lang="scss" scoped>
   .home{
+    padding-bottom: 90px;
     width: 100% !important;
     height: 100% !important;
+  }
+  .video-info {
+    position: fixed;
+    z-index: 9999;
+    bottom: 90px;
+    left: 0;
+    padding: 10px 20px;
+    width: 100%;
+    height: 150px;
+    background: rgba(0, 0, 0, 0.1);
+    .avatar {
+      position: absolute;
+      z-index: 3;
+      left: 20px;
+      top: 35px;
+      display: inline-block;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      vertical-align: top;
+      background: #eee;
+    }
+    .info-cont {
+      padding: 5px 20px 5px 110px;
+      width: 100%;
+      .tag-box, .user-name, .video-title {
+        width: 100%;
+      }
+      .tag-box {
+        height: 40px;
+        line-height: 40px;
+        color: #409EFF;
+        font-size: 24px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        .el-icon-s-flag {
+          font-size: 24px;
+        }
+      }
+      .user-name {
+        height: 40px;
+        line-height: 40px;
+        color: #fff;
+        font-size: 28px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        &.userType-1 {
+          color: #ff0 !important;
+        }
+        .isWhiteUser {
+          display: inline-block;
+          height: 40px;
+          line-height: 40px;
+          color: #f00 !important;
+          font-size: 36px;
+          vertical-align: middle;
+        }
+      }
+      .video-title {
+        height: 40px;
+        line-height: 40px;
+        color: #fff;
+        font-size: 24px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      
+    }
+  }
+  .el-footer-box {
+    height: 90px !important;
   }
   .bottom-box {
     position: fixed;
@@ -192,7 +333,7 @@ export default {
     height: 90px;
     padding: 15px 0;
     line-height: 60px;
-    background: #2e324b;
+    background: #292152;
     .icon-item {
       display: inline-block;
       width: 100%;

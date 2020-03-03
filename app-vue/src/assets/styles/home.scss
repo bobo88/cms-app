@@ -8,6 +8,9 @@
 }
 .video-player {
 	.video-js {
+		.vjs-big-play-button {
+			display: none !important;
+		}
 		.vjs-play-control {
 			position: fixed;
 			z-index: 99;
@@ -43,6 +46,9 @@
 					font-size: 60px;
 				}
 			}
+		}
+		.vjs-controls-disabled .vjs-big-play-button, .vjs-has-started .vjs-big-play-button, .vjs-using-native-controls .vjs-big-play-button, .vjs-error .vjs-big-play-button {
+			display: none !important;
 		}
 		.vjs-volume-panel, .vjs-mute-control, .vjs-volume-control, .vjs-progress-control, .vjs-live-control, .vjs-playback-rate, .vjs-chapters-button, .vjs-fullscreen-control {
 			display: none;
