@@ -22,3 +22,53 @@
     }
   }
 }
+
+.el-select-dropdown__item {
+  height: 40px !important;
+  line-height: 40px !important;
+}
+
+.set-tag {
+  .el-input {
+    &.el-input--mini {
+      .el-input__inner {
+        height: 50px;
+        line-height: 50px;
+      }
+    }
+  }
+  .el-checkbox__inner {
+    width: 28px;
+    height: 28px;
+    &:after {
+      height: 14px;
+      width: 6px;
+      top: 2px;
+      left: 9px;
+    }
+  }
+  .el-checkbox__label {
+    font-size: 24px;
+  }
+
+  .el-tree-node__content {
+    height: 50px;
+  }
+  .el-tree-node__content>.el-tree-node__expand-icon {
+    padding: 12px;
+  }
+  .el-tree-node__content>label.el-checkbox {
+    margin-right: 16px;
+  }
+}
+
+.video-info {
+  .swiper-slide {
+    width: auto !important;
+    margin-right: 20px !important;
+  }
+}
+
+.marquee-text-text {
+  margin-right: 30px;
+}

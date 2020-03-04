@@ -18,6 +18,11 @@ import constant from './constant'
 import MarqueeText from 'vue-marquee-text-component'
 Vue.component('marquee-text', MarqueeText)
 
+// // 左右滑动
+// import VueAwesomeSwiper from 'vue-awesome-swiper'
+// import 'swiper/dist/css/swiper.css'
+// Vue.use(VueAwesomeSwiper)
+
 // require videojs style
 import 'video.js/dist/video-js.css'
 // import 'vue-video-player/src/custom-theme.css'

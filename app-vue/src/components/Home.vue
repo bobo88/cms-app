@@ -21,25 +21,25 @@
     <div class="video-info">
       <img :src="currentVideoItem.avatarUrl" class="avatar" alt="">
       <div class="info-cont inline-block">
+        <!-- 标签 -->
         <div class="tag-box">
           <div v-if="currentVideoItem.labelTitles && currentVideoItem.labelTitles.length > 0">
             <span class="el-icon-s-flag vm"></span>
             <marquee-text class="inline-block vm">
-              {{ currentVideoItem.labelTitles.join(', ') }}
+              {{currentVideoItem.labelTitles.join(', ')}}
             </marquee-text>
+            <!-- <swiper class="swiper-box inline-block" :options="swiperOption" ref="mySwiper">
+              <swiper-slide v-for="(item, key) in currentVideoItem.labelTitles" :key="key">{{ item }} &</swiper-slide>
+            </swiper> -->
           </div>
-          
-          <!-- <el-tag v-if="currentVideoItem.categoryTitle">{{ currentVideoItem.categoryTitle }}</el-tag> -->
-          <!-- <el-tag v-if="currentVideoItem.secondTagsStr">{{ currentVideoItem.secondTagsStr }}</el-tag> -->
-          <!-- <el-tag v-if="currentVideoItem.labelTitles">{{ currentVideoItem.labelTitles }}</el-tag> -->
         </div>
         <p class="user-name" :class="{'userType-1': currentVideoItem.userType === 1}">
           <span v-if="currentVideoItem.whiteType === 1" class="isWhiteUser el-icon-star-on"></span>
           @{{ currentVideoItem.name }} 
         </p>
         <div class="video-title">
-          <el-tag effect="dark" v-if="currentVideoItem.categoryTitle" class="mr10">1. {{currentVideoItem.categoryTitle}}</el-tag>
-          <el-tag effect="dark" v-if="currentVideoItem.secondTagsStr" class="mr10" type="success">2. {{currentVideoItem.secondTagsStr}}</el-tag>
+          <el-tag effect="dark" v-if="currentVideoItem.categoryTitle" class="mr10 tag-item">1. {{currentVideoItem.categoryTitle}}</el-tag>
+          <el-tag effect="dark" v-if="currentVideoItem.secondTagsStr" class="mr10 tag-item" type="success">2. {{currentVideoItem.secondTagsStr}}</el-tag>
           {{ currentVideoItem.title }}
         </div>
       </div>
@@ -83,7 +83,7 @@
     </el-dialog>
 
     <!-- 设置标签 -->
-    <set-tag ref="setTagRef" :data-item="currentVideoItem"></set-tag>
+    <set-tag ref="setTagRef" :data-tags="currentVideoTagsData" @cb="setTagsCb"></set-tag>
   </div>
 </template>
 
@@ -121,7 +121,23 @@ export default {
       },
       videoList: [],
       currentVideoIndex: 0,
-      currentVideoItem: {}
+      currentVideoItem: {},
+      currentVideoTagsData: {},
+      swiperOption: {
+        // // width: 'auto',
+        // loop: false,
+        // // freeMode: true,
+        // slidesPerView: 'auto',
+        // // freeModeSticky: true,
+        // freeMode: true
+        observer:true,//修改swiper自己或子元素时，自动初始化swiper
+        observeParents:true,//修改swiper的父元素时，自动初始化swiper
+        slidesPerView: 'auto', 
+        centeredSlides: false, 
+        paginationClickable: true,
+        autoplay:true,
+        // loop:true
+      }
     }
   },
   created() {
@@ -133,6 +149,9 @@ export default {
     // this.$refs.videoPlayer.player.pause();
     player () {
       return this.$refs.videoPlayer.player
+    },
+    swiper() {
+      return this.$refs.mySwiper.swiper
     }
   },
   methods: {
@@ -186,7 +205,22 @@ export default {
     },
     // 设置标签
     setTag () {
-      this.$refs.setTagRef.show();
+      // 注意： categoryId是为了区分 < 首次设置标签 > 还是 < 更新标签 >
+      console.log(55, this.currentVideoItem)
+      let { videoId, userId, videoStatus, title, categoryId, categoryTitle, createdTime, scopeArea, labelIds } = this.currentVideoItem;
+      this.currentVideoTagsData = {
+        visible: true,
+        videoId,
+        userId,
+        videoStatus,
+        title,
+        categoryId,
+        categoryTitle,
+        createdTime,
+        scopeArea,
+        labelIds
+      };
+      // this.$refs.setTagRef.show();
     },
     // 下一个视频（审核通过或者不通过）
     nextVideo () {
@@ -281,6 +315,16 @@ export default {
         this.refreshData();
       }
     },
+    // 设置标签后 的回调函数
+    setTagsCb (options) {
+      let { categoryId, title, tags, scopeArea, selectAllTag, labelIds } = options;
+      this.currentVideoItem.categoryTitle = title;
+      this.currentVideoItem.categoryId = categoryId;
+      this.currentVideoItem.secondTagsStr = tags;
+      this.currentVideoItem.scopeArea = scopeArea;
+      this.currentVideoItem.labelTitles = selectAllTag;
+      this.currentVideoItem.labelIds = labelIds;
+    },
     // listen event
     onPlayerPlay (player) {
       // console.log('player play!', player)
@@ -313,7 +357,7 @@ export default {
   }
   .video-info {
     position: fixed;
-    z-index: 9999;
+    z-index: 99;
     bottom: 90px;
     left: 0;
     padding: 10px 20px;
@@ -339,6 +383,8 @@ export default {
         width: 100%;
       }
       .tag-box {
+        position: relative;
+        z-index: 1;
         height: 40px;
         line-height: 40px;
         color: #409EFF;
@@ -348,6 +394,11 @@ export default {
         white-space: nowrap;
         .el-icon-s-flag {
           font-size: 24px;
+        }
+        .swiper-box {
+          height: 40px;
+          line-height: 40px;
+          vertical-align: middle;
         }
       }
       .user-name {
@@ -378,6 +429,12 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        .tag-item {
+          max-width: 150px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
       }
       
     }
@@ -387,7 +444,7 @@ export default {
   }
   .bottom-box {
     position: fixed;
-    z-index: 9999;
+    z-index: 99;
     bottom: 0;
     left: 0;
     width: 100%;
