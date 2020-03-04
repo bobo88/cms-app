@@ -110,7 +110,7 @@ export default {
   },
   computed: {
     filterSecondTags () {
-      // 如果有选择一级标签，则筛选出 <当前一级标签> 下的 <二级标签> 列表
+      // x如果有选择一级标签，则筛选出 <当前一级标签> 下的 <二级标签> 列表
       if (Boolean(this.firstTagsSelect)) {
         return this.secondTagsList.filter(i => this.firstTagsSelect.includes(i.parentId));
       }
