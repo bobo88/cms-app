@@ -23,7 +23,7 @@
 							<el-checkbox v-for="item in firstTagsList" :label="item.id" :key="item.id" class="w200 mb10 f24">{{ item.title }}</el-checkbox>
 						</el-checkbox-group>
 					</div>
-					<div v-if='firstTagsSelect.length>0'>Selected: {{firstTagsSelectTitle}}</div>
+					<div class="selected-tags" v-if='firstTagsSelect.length>0'>Selected: {{firstTagsSelectTitle}}</div>
 				</div>
 
 				<div class="tags-box mb20">
@@ -38,7 +38,7 @@
 						</div>             
 						</el-checkbox-group>
 					</div>
-					<div>Selected: {{secondTagsSelectTitle}}</div>
+					<div class="selected-tags">Selected: {{secondTagsSelectTitle}}</div>
 				</div>
 
 				<div class="tags-box mb20">
@@ -46,10 +46,10 @@
 					<!-- :default-expanded-keys="dataTags.labelIds"
 						:default-checked-keys="dataTags.labelIds"-->
 					<div class="tags-list">
-						<el-tree :data="tagsTreeList" ref='tree' :show-checkbox='showCheckBox' :props="defaultProps" node-key="id"  
+						<el-tree :data="tagsTreeList" ref='tree' class="f24" :show-checkbox='showCheckBox' :props="defaultProps" node-key="id"  
 						@check-change='handleCheckChange'  check-strictly></el-tree>
 					</div>
-					<div v-if='selectAllTag.length>0'>Selected: {{selectAllTag}}</div>
+					<div class="selected-tags" v-if='selectAllTag.length>0'>Selected: {{selectAllTag}}</div>
 				</div>
 
         <div class="mb20">
@@ -322,5 +322,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  
+	.video-id, .video-desc {
+		font-size: 24px;
+	}
+	h3 {
+		font-size: 24px;
+	}
+  .selected-tags {
+		color: #67C23A;
+	}
 </style>
