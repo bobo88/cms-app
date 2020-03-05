@@ -54,22 +54,22 @@
         </el-col> -->
         <el-col :span="6">
           <div class="grid-content bg-purple" @click="setTag">
-            <span class="el-icon-s-flag icon-item inline-block f60"></span>
+            <span class="el-icon-s-flag icon-item inline-block"></span>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="grid-content bg-purple" @click="passed">
-            <span class="el-icon-circle-check icon-item inline-block f60"></span>
+            <span class="el-icon-circle-check icon-item inline-block"></span>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="grid-content bg-purple" @click="noPassed">
-            <span class="el-icon-circle-close icon-item inline-block f60"></span>
+            <span class="el-icon-circle-close icon-item inline-block"></span>
           </div>
         </el-col>
         <el-col :span="6">
           <div class="grid-content bg-purple" @click="loginOutOprate">
-            <span class="el-icon-right icon-item inline-block f60"></span>
+            <span class="el-icon-right icon-item inline-block"></span>
           </div>
         </el-col>
       </el-row>
@@ -255,7 +255,6 @@ export default {
     passed () {
       this.centerDialogVisible = true;
       this.rowVideoId = this.currentVideoItem.videoId;
-      // this.oprateFun(0);
     },
     handleRecommend () {
       this.ajaxPassVideo([{
@@ -302,18 +301,6 @@ export default {
           this.$message.error('删除当前视频失败！');
         }
       }
-      // this.oprateFun(1);
-    },
-    // 审核 通过 / 不通过
-    oprateFun (type) {
-      if (this.currentVideoIndex < this.videoList.length - 1) {
-        type === 0 ? this.$message.success('审核通过') : this.$message.error('审核不通过');
-        this.currentVideoIndex ++;
-        this.videoInit(this.currentVideoIndex);
-      } else {
-        // this.$message.error('当前视频是最后一个视频，请点击刷新按钮进行数据更新！');
-        this.refreshData();
-      }
     },
     // 设置标签后 的回调函数
     setTagsCb (options) {
@@ -358,12 +345,14 @@ export default {
   .video-info {
     position: fixed;
     z-index: 99;
-    bottom: 90px;
+    bottom: 120px;
     left: 0;
     padding: 10px 20px;
     width: 100%;
     height: 150px;
-    background: rgba(0, 0, 0, 0.1);
+    // background: rgba(0, 0, 0, 0.1);
+    background: -webkit-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0));
+    background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0));
     .avatar {
       position: absolute;
       z-index: 3;
@@ -440,7 +429,7 @@ export default {
     }
   }
   .el-footer-box {
-    height: 90px !important;
+    height: 120px !important;
   }
   .bottom-box {
     position: fixed;
@@ -448,14 +437,17 @@ export default {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 90px;
-    padding: 15px 0;
+    height: 120px;
+    padding: 20px 0 40px;
     line-height: 60px;
-    background: #292152;
+    // background: #1a1b20;
+    background: -webkit-linear-gradient(left,#1f1f35, #2a1a39);
+    background: -moz-linear-gradient(left,#1f1f35, #2a1a39);
     .icon-item {
       display: inline-block;
       width: 100%;
-      color: #fff;
+      color: #979797;
+      font-size: 48px;
       text-align: center;
     }
   }

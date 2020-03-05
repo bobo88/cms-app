@@ -1,28 +1,28 @@
 <template>
-  <div class="login">
-    <p class="logo mb10">
-      <img src="@/assets/logo.png" alt="">
-    </p>
-    <div class="mb10 pr20 pl20 tc lh60">
-      <span class="f20 pr10 inline-block lh60 w100 vm">用户名</span>
-      <div class="w300 lh60 inline-block vm">
-        <el-input class="lh60 inline-block vt" v-model="username" size="small" placeholder="Username"></el-input>
+  <div class="login-bg">
+    <div class="login">
+      <p class="logo mb10">
+        <img src="@/assets/logo.png" alt="">
+        <span>Vskit CMS</span>
+      </p>
+      <div class="mb10 pr20 pl20 tc lh60">
+        <div class="w60Percent lh60 inline-block">
+          <el-input class="lh60 inline-block vt" v-model="username" size="small" placeholder="Username"></el-input>
+        </div>
+      </div>
+
+      <div class="mb10 pr20 pl20 tc lh60">
+        <div class="w60Percent lh60 inline-block">
+          <el-input class="lh60 inline-block vt" placeholder="Password" size="small" v-model="password" show-password></el-input>
+        </div>
+      </div>
+
+      <div class="mb10 pr20 pl20 tc lh60">
+        <div class="w60Percent lh60 inline-block">
+          <el-button class="w100Percent lh60" size="small" type="primary" @click="loginOprate">登录</el-button>
+        </div>
       </div>
     </div>
-
-    <div class="mb10 pr20 pl20 tc lh60">
-      <span class="f20 pr10 inline-block lh60 w100 vm">密码</span>
-      <div class="w300 lh60 inline-block vm">
-        <el-input class="lh60 inline-block vt" placeholder="Password" size="small" v-model="password" show-password></el-input>
-      </div>
-    </div>
-
-    <div class="mb10 pr20 pl20 tc lh60">
-      <div class="w400 lh60 inline-block">
-        <el-button class="w100Percent lh60" size="small" type="primary" @click="loginOprate">登录</el-button>
-      </div>
-    </div>
-
   </div>
 </template>
 
@@ -73,6 +73,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+  .login-bg {
+    width: 100%;
+    height: 100%;
+    background: url('../assets/bg.jpg') center center no-repeat;
+  }
   .login {
     position: fixed;
     z-index: 99;
@@ -80,17 +85,43 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    width: 100%;
-    height: 500px;
+    padding-top: 50px;
+    width: 80%;
+    height: 400px;
     margin: auto;
+    border-radius: 0 40px 0 40px;
+    background: rgba(0, 0, 0, 0.2);
   }
   .logo {
     height: 80px;
     text-align: center;
+    font-size: 0;
     img {
       display: inline-block;
       width: 80px;
       height: 80px;
+      vertical-align: middle;
+    }
+    span {
+      margin-left: 20px;
+      display: inline-block;
+      height: 80px;
+      line-height: 80px;
+      background-image: linear-gradient(135deg, deeppink, dodgerblue);
+      -webkit-background-clip: text;
+      -moz-background-clip: text;
+      background-clip: text;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      -moz-box-decoration-break: clone;
+      color: transparent;
+      position:relative;
+      // color: #fff;
+      // color: -webkit-linear-gradient(left,#d135f1, #219ffd);
+      // color: -moz-linear-gradient(left,#d135f1, #219ffd);
+      font-size: 32px;
+      font-weight: bold;
+      vertical-align: middle;
     }
   }
 </style>
