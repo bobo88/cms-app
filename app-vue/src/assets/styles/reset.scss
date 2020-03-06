@@ -76,10 +76,15 @@
 }
 
 .drawer-box {
+  outline: 0;
+  .el-drawer__container {
+    outline: 0;
+  }
   .el-drawer {
     width: 50% !important;
     -webkit-box-shadow: none;
     box-shadow: none;
+    outline: 0;
     .el-submenu__title, .el-menu-item, .el-menu-item-group__title {
       font-size: 24px !important;
     }
