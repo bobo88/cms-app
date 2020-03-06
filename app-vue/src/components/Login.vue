@@ -1,6 +1,6 @@
 <template>
   <div class="login-bg">
-    <div class="login">
+    <div class="login f24">
       <p class="logo mb10">
         <img src="@/assets/logo.png" alt="">
         <span>Vskit CMS</span>
@@ -77,6 +77,10 @@ export default {
     width: 100%;
     height: 100%;
     background: url('../assets/bg.jpg') center center no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    background-position: center 0;
   }
   .login {
     position: fixed;
@@ -89,8 +93,8 @@ export default {
     width: 80%;
     height: 400px;
     margin: auto;
-    border-radius: 0 40px 0 40px;
-    background: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.5);
   }
   .logo {
     height: 80px;
@@ -107,7 +111,7 @@ export default {
       display: inline-block;
       height: 80px;
       line-height: 80px;
-      background-image: linear-gradient(135deg, deeppink, dodgerblue);
+      background-image: linear-gradient(135deg, deeppink, #fff, dodgerblue);
       -webkit-background-clip: text;
       -moz-background-clip: text;
       background-clip: text;

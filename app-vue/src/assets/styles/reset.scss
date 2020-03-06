@@ -4,22 +4,25 @@
   // background: -webkit-linear-gradient(left,#213049, #312b4d);
   // background: -moz-linear-gradient(left,#213049, #312b4d);
 }
-.el-input {
-  &.el-input--small {
-    .el-input__inner {
-      height: 60px;
-      line-height: 60px;
+.login {
+  .el-input {
+    &.el-input--small {
+      font-size: 24px;
+      .el-input__inner {
+        height: 60px;
+        line-height: 60px;
+      }
     }
   }
-}
-
-.el-button {
-  &.el-button--primary {
-    &.el-button--small {
-      &.lh60 {
-        padding: 10px;
-        height: 60px;
-        line-height: 40px;
+  .el-button {
+    &.el-button--primary {
+      &.el-button--small {
+        font-size: 24px;
+        &.lh60 {
+          padding: 10px;
+          height: 60px;
+          line-height: 40px;
+        }
       }
     }
   }
