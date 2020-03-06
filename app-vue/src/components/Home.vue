@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" v-loading.fullscreen.lock="fullscreenLoading">
     <video-player  class="video-player-box"
       ref="videoPlayer"
       :options="playerOptions"
@@ -28,9 +28,6 @@
             <marquee-text class="inline-block vm">
               {{currentVideoItem.labelTitles.join(', ')}}
             </marquee-text>
-            <!-- <swiper class="swiper-box inline-block" :options="swiperOption" ref="mySwiper">
-              <swiper-slide v-for="(item, key) in currentVideoItem.labelTitles" :key="key">{{ item }} &</swiper-slide>
-            </swiper> -->
           </div>
         </div>
         <p class="user-name" :class="{'userType-1': currentVideoItem.userType === 1}">
@@ -67,9 +64,14 @@
             <span class="el-icon-circle-close icon-item inline-block"></span>
           </div>
         </el-col>
-        <el-col :span="6">
+        <!-- <el-col :span="6">
           <div class="grid-content bg-purple" @click="loginOutOprate">
             <span class="el-icon-right icon-item inline-block"></span>
+          </div>
+        </el-col> -->
+        <el-col :span="6">
+          <div class="grid-content bg-purple" @click="showLeftDrawer">
+            <span class="el-icon-setting icon-item inline-block"></span>
           </div>
         </el-col>
       </el-row>
@@ -82,21 +84,34 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="是否删除该视频？" :visible.sync="centerDeleteDialogVisible" width="60%" center>
+      <div class="tc">
+        <el-button size="mini" @click="centerDeleteDialogVisible = false">No</el-button>
+        <el-button size="mini" type="danger" @click="deleteOprate">Yes</el-button>
+      </div>
+    </el-dialog>
+
     <!-- 设置标签 -->
     <set-tag ref="setTagRef" :data-tags="currentVideoTagsData" @cb="setTagsCb"></set-tag>
+    <!-- 左侧栏 -->
+    <left-drawer ref="leftDrawerRef"></left-drawer>
   </div>
 </template>
 
 <script>
 import SetTag from '@/components/SetTag.vue'
+import LeftDrawer from '@/components/LeftDrawer.vue'
 export default {
   name: 'home',
   components: {
-    SetTag
+    SetTag,
+    LeftDrawer
   },
   data () {
     return {
+      fullscreenLoading: false,
       centerDialogVisible: false,
+      centerDeleteDialogVisible: false,
       rowVideoId: '',
       playerOptions: {
         autoplay: true,
@@ -122,73 +137,36 @@ export default {
       videoList: [],
       currentVideoIndex: 0,
       currentVideoItem: {},
-      currentVideoTagsData: {},
-      swiperOption: {
-        // // width: 'auto',
-        // loop: false,
-        // // freeMode: true,
-        // slidesPerView: 'auto',
-        // // freeModeSticky: true,
-        // freeMode: true
-        observer:true,//修改swiper自己或子元素时，自动初始化swiper
-        observeParents:true,//修改swiper的父元素时，自动初始化swiper
-        slidesPerView: 'auto', 
-        centeredSlides: false, 
-        paginationClickable: true,
-        autoplay:true,
-        // loop:true
-      }
+      currentVideoTagsData: {}
     }
   },
   created() {
     // this.loginTest();
+    this.fullscreenLoading = true;
     this.getReviewVideoListData();
   },
   computed: {
-    // this.$refs.videoPlayer.player.play();
-    // this.$refs.videoPlayer.player.pause();
     player () {
       return this.$refs.videoPlayer.player
-    },
-    swiper() {
-      return this.$refs.mySwiper.swiper
     }
   },
   methods: {
     async getReviewVideoListData () {
-      let options = {"pageIndex":1,"pageSize":50,"recommend":0,"startTime":0,"endTime":0,"id":0,"vskitId":"","videoId":"","musicId":"","activityId":"","videoStatus":2};
+      let options = {"pageIndex":1,"pageSize":10,"recommend":0,"startTime":0,"endTime":0,"id":0,"vskitId":"","videoId":"","musicId":"","activityId":"","videoStatus":2};
       let data = await this.$Api.getReviewVideoListData(options);
       console.log(data)
+      this.fullscreenLoading = false;
       if (data.code === 0) {
         this.videoList = data.data.dataList;
         // 视频初始化
         this.videoInit(0);
-        this.$message.success('获取列表成功！');
+        // this.$message.success('获取列表成功！');
       } else {
         this.$message.error('获取列表失败！');
       }
     },
-    async loginOutOprate () {
-      this.$Api.getLoginOutData({}, {
-        headers: {
-          'x-auth-token': this.$store.getters[this.Constant.GET_USER_TOKEN]
-        }
-      }).then(data => {
-        if (parseInt(data.code) === 0) {
-          // 退出登录后，删除cookie，跳转到登录页面
-          this.$store.commit(this.Constant.DELETE_LOGIN_DATA)
-          this.$message.success('退出登录成功！');
-          this.$router.push({
-            name: 'login',
-             'params': { 'urlType': 0}
-            })
-        } else {
-          this.$message.error(data.desc);
-        }
-      });
-      // let options = {"username":"Vadmin","password":"VsKiT201803#"};
-      // let data = await this.$Api.getLoginOutData(options);
-      // console.log(data)
+    showLeftDrawer () {
+      this.$refs.leftDrawerRef.show();
     },
     // 初始化视频，默认展示数据列表第一个视频
     videoInit (index) {
@@ -206,7 +184,7 @@ export default {
     // 设置标签
     setTag () {
       // 注意： categoryId是为了区分 < 首次设置标签 > 还是 < 更新标签 >
-      console.log(55, this.currentVideoItem)
+      // console.log(55, this.currentVideoItem)
       let { videoId, userId, videoStatus, title, categoryId, categoryTitle, createdTime, scopeArea, labelIds } = this.currentVideoItem;
       this.currentVideoTagsData = {
         visible: true,
@@ -280,26 +258,23 @@ export default {
       this.centerDialogVisible = false;
     },
     // 审核不通过
-    async noPassed () {
+    noPassed () {
+      this.centerDeleteDialogVisible = true;
+    },
+    // 删除视频
+    async deleteOprate () {
       let videoId = this.currentVideoItem.videoId;
-      let callback = await this.$confirm(
-       '确认删除当前视频？',
-        '',
-        {
-          confirmButtonText: 'Yes',
-          cancelButtonText: 'No',
-          type: 'warning',
-          center: true
-        }
-      );
-      if (callback) {
-        let data = await this.$Api.deleteVideo([videoId]);
-        console.log(data)
-        if (data.code === 0) {
-          this.nextVideo();
-        } else {
-          this.$message.error('删除当前视频失败！');
-        }
+      let data = await this.$Api.deleteVideo([videoId]);
+      console.log(data)
+      this.centerDeleteDialogVisible = false;
+      if (data.code === 0) {
+        this.$message({
+          type: 'success',
+          message: '操作成功'
+        });
+        this.nextVideo();
+      } else {
+        this.$message.error('删除当前视频失败！');
       }
     },
     // 设置标签后 的回调函数

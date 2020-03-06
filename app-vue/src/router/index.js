@@ -55,7 +55,7 @@ router.beforeEach((to, from, next) => {
   var isLogin = Store.getters[constant.GET_IS_LOGIN] || false;
   let isLoginPage = to.meta.isLoginPage || false;
   Store.commit(constant.SET_IS_LOGIN_PAGE, isLoginPage);
-  console.log(22, isLogin, isLoginPage)
+  // console.log(22, isLogin, isLoginPage)
   // 如果即将进入的页面需要认证，且当前没有认证，且当前页面不是登录页面，则跳转到登录页面
   if (!isLogin && !isLoginPage) {
     return next({path: '/login', 'params': {'urlType': 0}});

@@ -163,10 +163,18 @@ export default {
   },
   mounted() {},
   methods: {
-    handleCheckChange(){
+    // 共三个参数，依次为：传递给 data 属性的数组中该节点所对应的对象、节点本身是否被选中、节点的子树中是否有被选中的节点
+    handleCheckChange(a, b, c){
       let dataStr =  this.$refs.tree.getCheckedNodes().map((i) =>{
         return i.title;
       });
+      // console.log(dataStr, a, b, c)
+      if (dataStr && dataStr.length > 6) {
+        // setChecked: (key/data, checked, deep) 接收三个参数，1. 勾选节点的 key 或者 data 2. boolean 类型，节点是否选中 3. boolean 类型，是否设置子节点 ，默认为 false
+        this.$refs.tree.setChecked(a.id, false, false);
+        this.$message.error('标签勾选不能超过6个！');
+        return false;
+      }
       this.labelIds =  this.$refs.tree.getCheckedNodes().map((i) =>{
         return i.id;
       });

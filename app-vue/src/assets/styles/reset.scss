@@ -74,3 +74,14 @@
 .marquee-text-text {
   margin-right: 30px;
 }
+
+.drawer-box {
+  .el-drawer {
+    width: 50% !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    .el-submenu__title, .el-menu-item, .el-menu-item-group__title {
+      font-size: 24px !important;
+    }
+  }
+}
