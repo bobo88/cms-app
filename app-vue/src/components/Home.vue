@@ -79,15 +79,15 @@
 
     <el-dialog title="是否推荐该视频？" :visible.sync="centerDialogVisible" width="60%" center>
       <div class="tc">
-        <el-button size="mini" type="danger" @click="handleRecommend">推荐</el-button>
-        <el-button size="mini" type="primary" @click="handleNoRecommend">不推荐</el-button>
+        <el-button class="tc-box-btn-mr30" size="small" type="danger" @click="handleRecommend">推荐</el-button>
+        <el-button size="small" type="primary" @click="handleNoRecommend">不推荐</el-button>
       </div>
     </el-dialog>
 
     <el-dialog title="是否删除该视频？" :visible.sync="centerDeleteDialogVisible" width="60%" center>
       <div class="tc">
-        <el-button size="mini" @click="centerDeleteDialogVisible = false">No</el-button>
-        <el-button size="mini" type="danger" @click="deleteOprate">Yes</el-button>
+        <el-button class="tc-box-btn-mr30" size="small" @click="centerDeleteDialogVisible = false">No</el-button>
+        <el-button size="small" type="danger" @click="deleteOprate">Yes</el-button>
       </div>
     </el-dialog>
 
@@ -336,9 +336,11 @@ export default {
       display: inline-block;
       width: 90px;
       height: 90px;
+      border: none;
       border-radius: 50%;
       vertical-align: top;
-      background: #eee;
+      background: #ccc;
+      overflow: hidden;
     }
     .info-cont {
       padding: 5px 20px 5px 110px;
@@ -393,11 +395,15 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        vertical-align: middle;
         .tag-item {
+          height: 40px;
+          line-height: 40px;
           max-width: 150px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          vertical-align: middle;
         }
       }
       
@@ -425,5 +431,8 @@ export default {
       font-size: 48px;
       text-align: center;
     }
+  }
+  .tc-box-btn-mr30 {
+    margin-right: 30px !important;
   }
 </style>
