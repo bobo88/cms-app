@@ -38,11 +38,17 @@
         </el-menu-item>
         <el-menu-item index="4">
           <!-- <i class="el-icon-setting"></i> -->
-          <span slot="title">导航四</span>
+          <span slot="title">
+            <el-button class="f14" type="text" size="small" @click="changeLanguage">
+              <span :class="{'currentLang': $i18n.locale ==='en'}">English</span>
+               / 
+              <span :class="{'currentLang': $i18n.locale ==='zh'}">简体中文</span>
+            </el-button>
+          </span>
         </el-menu-item>
         <el-menu-item index="5">
           <!-- <i class="el-icon-setting"></i> -->
-          <span slot="title" @click="loginOutOprate">退出登录</span>
+          <span slot="title" @click="loginOutOprate">{{ $t("message.loginOut.outTit") }}</span>
         </el-menu-item>
       </el-menu>
     </el-drawer>
@@ -63,6 +69,15 @@ export default {
     // this.loginOprate();
   },
   methods: {
+    changeLanguage () {
+      if (this.$i18n.locale === 'en') {
+        this.$i18n.locale = 'zh';
+        localStorage.setItem('language', 'zh');
+      } else {
+        this.$i18n.locale = 'en';
+        localStorage.setItem('language', 'en');
+      }
+    },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
@@ -81,7 +96,7 @@ export default {
         if (parseInt(data.code) === 0) {
           // 退出登录后，删除cookie，跳转到登录页面
           this.$store.commit(this.Constant.DELETE_LOGIN_DATA)
-          this.$message.success('退出登录成功！');
+          // this.$message.success('退出登录成功！');
           this.$router.push({
             name: 'login',
              'params': { 'urlType': 0}
@@ -97,5 +112,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  
+  .currentLang {
+    color: #000;
+    font-weight: bold;
+  }
 </style>

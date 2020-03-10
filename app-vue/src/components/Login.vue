@@ -19,7 +19,7 @@
 
       <div class="mb10 pr20 pl20 tc lh60">
         <div class="w60Percent lh60 inline-block">
-          <el-button class="w100Percent lh60" size="small" type="primary" @click="loginOprate">登录</el-button>
+          <el-button class="w100Percent lh60" size="small" type="primary" @click="loginOprate">Login</el-button>
         </div>
       </div>
     </div>
@@ -120,9 +120,6 @@ export default {
       -moz-box-decoration-break: clone;
       color: transparent;
       position:relative;
-      // color: #fff;
-      // color: -webkit-linear-gradient(left,#d135f1, #219ffd);
-      // color: -moz-linear-gradient(left,#d135f1, #219ffd);
       font-size: 32px;
       font-weight: bold;
       vertical-align: middle;

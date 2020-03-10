@@ -77,14 +77,14 @@
       </el-row>
     </div>
 
-    <el-dialog title="是否推荐该视频？" :visible.sync="centerDialogVisible" width="60%" center>
+    <el-dialog :title="$t('message.userManagement.isRecommendVideo')" :visible.sync="centerDialogVisible" width="70%" center>
       <div class="tc">
-        <el-button class="tc-box-btn-mr30" size="small" type="danger" @click="handleRecommend">推荐</el-button>
-        <el-button size="small" type="primary" @click="handleNoRecommend">不推荐</el-button>
+        <el-button class="tc-box-btn-mr30" size="small" type="danger" @click="handleRecommend">{{ $t("message.userManagement.recommend") }}</el-button>
+        <el-button size="small" type="primary" @click="handleNoRecommend">{{ $t("message.userManagement.noRecommend") }}</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog title="是否删除该视频？" :visible.sync="centerDeleteDialogVisible" width="60%" center>
+    <el-dialog :title="$t('message.userManagement.isDeleteVideo')" :visible.sync="centerDeleteDialogVisible" width="70%" center>
       <div class="tc">
         <el-button class="tc-box-btn-mr30" size="small" @click="centerDeleteDialogVisible = false">No</el-button>
         <el-button size="small" type="danger" @click="deleteOprate">Yes</el-button>
@@ -162,7 +162,7 @@ export default {
         this.videoInit(0);
         // this.$message.success('获取列表成功！');
       } else {
-        this.$message.error('获取列表失败！');
+        this.$message.error('Failed to get the list!');
       }
     },
     showLeftDrawer () {
@@ -215,12 +215,12 @@ export default {
       if (parseInt(data.code) === 0 || parseInt(data.code) === 200) {
         this.$message({
           type: 'success',
-          message: '操作成功'
+          message: this.$t('message.PromptInformation.successfulOperation')
         });
         this.nextVideo();
       } else {
         if (parseInt(data.code) === 210110) {
-          this.$message.error('资源错误！');
+          this.$message.error(this.$t('message.videoIsDeleted'));
         }
       }
     },
@@ -270,11 +270,11 @@ export default {
       if (data.code === 0) {
         this.$message({
           type: 'success',
-          message: '操作成功'
+          message: this.$t('message.PromptInformation.successfulOperation')
         });
         this.nextVideo();
       } else {
-        this.$message.error('删除当前视频失败！');
+        this.$message.error(this.$t('message.PromptInformation.failedOperation'));
       }
     },
     // 设置标签后 的回调函数
