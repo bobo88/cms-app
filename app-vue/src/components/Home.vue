@@ -77,14 +77,14 @@
       </el-row>
     </div>
 
-    <el-dialog :title="$t('message.userManagement.isRecommendVideo')" :visible.sync="centerDialogVisible" width="70%" center>
+    <el-dialog title="Do you recommend video?" :visible.sync="centerDialogVisible" width="70%" center>
       <div class="tc">
-        <el-button class="tc-box-btn-mr30" size="small" type="danger" @click="handleRecommend">{{ $t("message.userManagement.recommend") }}</el-button>
-        <el-button size="small" type="primary" @click="handleNoRecommend">{{ $t("message.userManagement.noRecommend") }}</el-button>
+        <el-button class="tc-box-btn-mr30" size="small" type="danger" @click="handleRecommend">Recommend</el-button>
+        <el-button size="small" type="primary" @click="handleNoRecommend">Not Recommend</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog :title="$t('message.userManagement.isDeleteVideo')" :visible.sync="centerDeleteDialogVisible" width="70%" center>
+    <el-dialog title="Delete current video?" :visible.sync="centerDeleteDialogVisible" width="70%" center>
       <div class="tc">
         <el-button class="tc-box-btn-mr30" size="small" @click="centerDeleteDialogVisible = false">No</el-button>
         <el-button size="small" type="danger" @click="deleteOprate">Yes</el-button>
@@ -215,12 +215,12 @@ export default {
       if (parseInt(data.code) === 0 || parseInt(data.code) === 200) {
         this.$message({
           type: 'success',
-          message: this.$t('message.PromptInformation.successfulOperation')
+          message: 'Successful Operation'
         });
         this.nextVideo();
       } else {
         if (parseInt(data.code) === 210110) {
-          this.$message.error(this.$t('message.videoIsDeleted'));
+          this.$message.error('Resource error!');
         }
       }
     },
@@ -270,11 +270,11 @@ export default {
       if (data.code === 0) {
         this.$message({
           type: 'success',
-          message: this.$t('message.PromptInformation.successfulOperation')
+          message: 'Successful Operation'
         });
         this.nextVideo();
       } else {
-        this.$message.error(this.$t('message.PromptInformation.failedOperation'));
+        this.$message.error('Operation failed');
       }
     },
     // 设置标签后 的回调函数

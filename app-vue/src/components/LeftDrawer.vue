@@ -36,8 +36,7 @@
           <!-- <i class="el-icon-document"></i> -->
           <span slot="title">导航三</span>
         </el-menu-item>
-        <el-menu-item index="4">
-          <!-- <i class="el-icon-setting"></i> -->
+        <!-- <el-menu-item index="4">
           <span slot="title">
             <el-button class="f24" type="text" size="small" @click="changeLanguage">
               <span :class="{'currentLang': $i18n.locale ==='en'}">English</span>
@@ -45,10 +44,10 @@
               <span :class="{'currentLang': $i18n.locale ==='zh'}">简体中文</span>
             </el-button>
           </span>
-        </el-menu-item>
+        </el-menu-item> -->
         <el-menu-item index="5">
           <!-- <i class="el-icon-setting"></i> -->
-          <span slot="title" @click="loginOutOprate">{{ $t("message.loginOut.outTit") }}</span>
+          <span slot="title" @click="loginOutOprate">Logout</span>
         </el-menu-item>
       </el-menu>
     </el-drawer>
@@ -69,15 +68,15 @@ export default {
     // this.loginOprate();
   },
   methods: {
-    changeLanguage () {
-      if (this.$i18n.locale === 'en') {
-        this.$i18n.locale = 'zh';
-        localStorage.setItem('language', 'zh');
-      } else {
-        this.$i18n.locale = 'en';
-        localStorage.setItem('language', 'en');
-      }
-    },
+    // changeLanguage () {
+    //   if (this.$i18n.locale === 'en') {
+    //     this.$i18n.locale = 'zh';
+    //     localStorage.setItem('language', 'zh');
+    //   } else {
+    //     this.$i18n.locale = 'en';
+    //     localStorage.setItem('language', 'en');
+    //   }
+    // },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },

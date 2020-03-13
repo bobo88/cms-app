@@ -2,22 +2,22 @@
   <div class="set-tag">
    	<el-dialog
       center
-      :title="$t('message.tagsManagement.setTags')"
+      title="Set tags"
       :visible.sync="dataTags.visible"  :before-close='closeOparete'
       width="80%">
       <div class="set-tags-content f24">
-        <p class="video-id"><span class="fb">{{ $t("message.videoID") }}：</span> {{ dataTags.videoId }}</p>
-        <p class="video-desc mb10"><span class="fb">{{ $t('message.contentManagement.description') }}：</span> {{ dataTags.title }}</p>
+        <p class="video-id"><span class="fb">Video ID：</span> {{ dataTags.videoId }}</p>
+        <p class="video-desc mb10"><span class="fb">Description：</span> {{ dataTags.title }}</p>
 
         <div class="mb20">
-          <span class="fb">{{ $t("message.tagsManagement.categoryTitle") }}：</span>
-          <el-select clearable size="mini" class="w300 f24" v-model="categoryIdSelect" :placeholder="$t('message.tagsManagement.selectCategory')">
+          <span class="fb">Category title：</span>
+          <el-select clearable size="mini" class="w300 f24" v-model="categoryIdSelect" placeholder="Select belongs to category">
             <el-option class="f24" v-for="item in categoryList" :key="item.categoryId" :label="item.title" :value="item.categoryId"></el-option>
           </el-select>
         </div>
 
 				<div class="tags-box mb20">
-					<h3>{{ $t("message.tagsManagement.firstClassify") }}：</h3>
+					<h3>First Classify：</h3>
 					<div class="tags-list">
 						<el-checkbox-group v-model="firstTagsSelect" :max="3">
 							<el-checkbox v-for="item in firstTagsList" :label="item.id" :key="item.id" class="w200 mb10 f24">{{ item.title }}</el-checkbox>
@@ -27,7 +27,7 @@
 				</div>
 
 				<div class="tags-box mb20">
-					<h3>{{ $t("message.tagsManagement.secondClassify")  }}：</h3>
+					<h3>Second Classify：</h3>
 					<div class="tags-list">
 						<el-checkbox-group v-model="secondTagsSelect" :max="3">
 						<div  v-for="(item, index) in filterSecondTags" :key="index" class='secondTagCenter'>
@@ -42,19 +42,19 @@
 				</div>
 
 				<div class="tags-box mb20">
-					<h3>{{ $t("message.tagsManagement.tag")  }}</h3>
+					<h3>Tags:</h3>
 					<!-- :default-expanded-keys="dataTags.labelIds"
 						:default-checked-keys="dataTags.labelIds"-->
 					<div class="tags-list">
-						<el-tree :data="tagsTreeList" ref='tree' class="f24" :show-checkbox='showCheckBox' :props="defaultProps" node-key="id"  
+						<el-tree :data="tagsTreeList" ref='tree' class="f24" :show-checkbox='showCheckBox' :props="defaultProps" empty-text="No Data" node-key="id"  
 						@check-change='handleCheckChange'  check-strictly></el-tree>
 					</div>
 					<div class="selected-tags" v-if='selectAllTag.length>0'>Selected: {{selectAllTag}}</div>
 				</div>
 
         <div class="mb20">
-          <span class="fb">{{ $t("message.contentApproval.contentApply") }}: </span>
-          <el-select v-model="dataTags.scopeArea" size="mini" class="w300" :placeholder="$t('message.contentApproval.contentApply')">
+          <span class="fb">Content Apply: </span>
+          <el-select v-model="dataTags.scopeArea" size="mini" class="w300" placeholder="Content Apply">
             <el-option v-for='item in contentTrialItem' :key="item.value" :label="item.name" :value="item.value">
             </el-option>
           </el-select>
@@ -62,8 +62,8 @@
       </div>
 
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" @click="closeOparete">{{ $t("message.PromptInformation.NO") }}</el-button>
-        <el-button size="small" @click="saveAndComment(0)" type="primary">{{ $t("message.save") }}</el-button>
+        <el-button size="small" @click="closeOparete">NO</el-button>
+        <el-button size="small" @click="saveAndComment(0)" type="primary">Save</el-button>
       </span>
     </el-dialog>
   </div>
@@ -139,23 +139,23 @@ export default {
     contentTrialItem () {
       return [
         {
-          name: this.$t('message.tagsManagement.not'),
+          name: 'N/A',
           value: 'N/A'
         },
         {
-          name: this.$t('message.contentApproval.common'),
+          name: 'general',
           value: 'GENERAL'
         },
          {
-          name: this.$t('message.contentApproval.northAfrica'),
+          name: 'north africa',
           value: 'NORTH_AFRICA'
         },
         {
-          name: this.$t('message.tagsManagement.english'),
+          name: 'english',
           value: 'ENGLISH'
         },
         {
-          name: this.$t('message.tagsManagement.french'),
+          name: 'french',
           value: 'FRENCH'
         }
       ]
@@ -172,7 +172,7 @@ export default {
       if (dataStr && dataStr.length > 6) {
         // setChecked: (key/data, checked, deep) 接收三个参数，1. 勾选节点的 key 或者 data 2. boolean 类型，节点是否选中 3. boolean 类型，是否设置子节点 ，默认为 false
         this.$refs.tree.setChecked(a.id, false, false);
-        this.$message.error(this.$t('message.tagsManagement.maxChooseTips'));
+        this.$message.error('No more than 6 tags can be checked!');
         return false;
       }
       this.labelIds =  this.$refs.tree.getCheckedNodes().map((i) =>{
@@ -239,12 +239,12 @@ export default {
     validateBeforeSubmit () {
       // 选择类目
       if (!this.categoryIdSelect) {
-        this.$message.error(this.$t('message.tagsManagement.selectCategory'));
+        this.$message.error('Select belongs to category');
         return false;
       }
       // 选择二级标签
       if (this.secondTagsSelect && this.secondTagsSelect.length === 0) {
-        this.$message.error(this.$t('message.tagsManagement.selectParentTags'));
+        this.$message.error('Select belongs to tags');
         return false;
       }
       return true;
