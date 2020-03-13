@@ -10,9 +10,8 @@
         class="el-menu-vertical-demo f24"
         @open="handleOpen"
         @close="handleClose">
-        <el-submenu index="1">
+        <!-- <el-submenu index="1">
           <template slot="title">
-            <!-- <i class="el-icon-location"></i> -->
             <span>导航一</span>
           </template>
           <el-menu-item-group>
@@ -29,12 +28,13 @@
           </el-submenu>
         </el-submenu>
         <el-menu-item index="2">
-          <!-- <i class="el-icon-menu"></i> -->
           <span slot="title">导航二</span>
         </el-menu-item>
         <el-menu-item index="3" disabled>
-          <!-- <i class="el-icon-document"></i> -->
           <span slot="title">导航三</span>
+        </el-menu-item> -->
+        <el-menu-item index="4">
+          <span slot="title" @click="showUserManualTc">User manual</span>
         </el-menu-item>
         <!-- <el-menu-item index="4">
           <span slot="title">
@@ -51,13 +51,20 @@
         </el-menu-item>
       </el-menu>
     </el-drawer>
+
+    <!-- UserManual -->
+    <user-manual ref="userManualRef"></user-manual>
   </div>
 </template>
 
 <script>
+import UserManual from '@/components/UserManual.vue'
 export default {
   name: 'left-drawer',
   props: ['dataVisible'],
+  components: {
+    UserManual
+  },
   data () {
     return {
       drawer: false,
@@ -77,6 +84,9 @@ export default {
     //     localStorage.setItem('language', 'en');
     //   }
     // },
+    showUserManualTc () {
+      this.$refs.userManualRef.show();
+    },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },

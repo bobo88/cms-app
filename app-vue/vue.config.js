@@ -39,13 +39,11 @@ module.exports = {
   // 是否使用包含运行时编译器的 Vue 构建版本。设置为 true 后你就可以在 Vue 组件中使用 template 选项了，但是这会让你的应用额外增加 10kb 左右。
   runtimeCompiler: false,
   // 默认情况下 babel-loader 会忽略所有 node_modules 中的文件。如果你想要通过 Babel 显式转译一个依赖，可以在这个选项中列出来。
-  transpileDependencies: ['element-ui'],
+  transpileDependencies: [],
 
   // webpack配置
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
-  chainWebpack: (config) => {
-    config.entry('main').add('babel-polyfill')
-  },
+  chainWebpack: () => {},
   //  将接收ChainableConfig由webpack-chain提供支持的实例的函数。
   configureWebpack: config => {
     // config.externals = {
@@ -78,7 +76,8 @@ module.exports = {
     hotOnly:true,
     proxy: {
       '/prevApi': {
-        target: 'http://120.79.151.52:9093/vskit/',
+        target: 'http://120.79.151.52:9093/vskit/', // 测试环境
+        // target: 'https://cms-api.v-skit.com/vskit/', // 正式环境
         changeOrigin: true,
         pathRewrite: {
           '^/prevApi': '/'

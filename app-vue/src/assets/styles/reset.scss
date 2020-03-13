@@ -1,8 +1,16 @@
 .video-js {
   width: 100% !important;
   height: 100% !important;
+  overflow: hidden;
   // background: -webkit-linear-gradient(left,#213049, #312b4d);
   // background: -moz-linear-gradient(left,#213049, #312b4d);
+  .vjs-tech {
+    position: absolute !important;
+    top: -5% !important;
+    left: -5% !important;
+    width: 110% !important;
+    height: 110% !important;
+  }
 }
 .login {
   .el-input {
