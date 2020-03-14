@@ -94,7 +94,7 @@
     <!-- 设置标签 -->
     <set-tag ref="setTagRef" :data-tags="currentVideoTagsData" @cb="setTagsCb"></set-tag>
     <!-- 左侧栏 -->
-    <left-drawer ref="leftDrawerRef"></left-drawer>
+    <left-drawer ref="leftDrawerRef" @cbRefresh="refreshOprate"></left-drawer>
   </div>
 </template>
 
@@ -178,6 +178,7 @@ export default {
     },
     // 刷新视频列表数据
     refreshData () {
+      this.fullscreenLoading = true;
       this.currentVideoIndex = 0;
       this.getReviewVideoListData();
     },
@@ -286,6 +287,10 @@ export default {
       this.currentVideoItem.scopeArea = scopeArea;
       this.currentVideoItem.labelTitles = selectAllTag;
       this.currentVideoItem.labelIds = labelIds;
+    },
+    // 刷新当前列表
+    refreshOprate () {
+      this.refreshData();
     },
     // listen event
     onPlayerPlay (player) {

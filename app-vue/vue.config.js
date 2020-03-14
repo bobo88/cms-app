@@ -1,5 +1,5 @@
 // vue.config.js
-const CompressionWebpackPlugin = require ('compression-webpack-plugin');
+// const CompressionWebpackPlugin = require ('compression-webpack-plugin');
 const productionGzipExtensions = ['js', 'css'];
 const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
@@ -8,9 +8,8 @@ module.exports = {
   // 当使用 pages 选项构建多页面应用时。
   publicPath: '',
   // 当运行 vue-cli-service build 时生成的生产环境构建文件的目录。注意目标目录在构建之前会被清除 (构建时传入 --no-clean 可关闭该行为)。
-  outputDir: process.env.outputDir,
+  outputDir: process.env.VUE_APP_DIST,
   // 放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录。
-  outputDir: 'dist',
   assetsDir: 'assets',
   // 指定生成的 index.html 的输出路径 (相对于 outputDir)。也可以是一个绝对路径。
   indexPath: 'index.html',
@@ -45,22 +44,27 @@ module.exports = {
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
   chainWebpack: () => {},
   //  将接收ChainableConfig由webpack-chain提供支持的实例的函数。
-  configureWebpack: config => {
-    // config.externals = {
-    //   'vue': 'Vue',
-    //   'vue-router': 'VueRouter'
-    // };
-    if (isProduction) {
-      config.plugins.push (
-        new CompressionWebpackPlugin ({
-          algorithm: 'gzip',
-          test: new RegExp (
-            '\\.(' + productionGzipExtensions.join ('|') + ')$'
-          ),
-          threshold: 10240,
-          minRatio: 0.8,
-        })
-      );
+  // configureWebpack: config => {
+  //   // config.externals = {
+  //   //   'vue': 'Vue',
+  //   //   'vue-router': 'VueRouter'
+  //   // };
+  //   if (isProduction) {
+  //     config.plugins.push (
+  //       new CompressionWebpackPlugin ({
+  //         algorithm: 'gzip',
+  //         test: new RegExp (
+  //           '\\.(' + productionGzipExtensions.join ('|') + ')$'
+  //         ),
+  //         threshold: 10240,
+  //         minRatio: 0.8,
+  //       })
+  //     );
+  //   }
+  // },
+  configureWebpack: {
+    performance: {
+      hints: false
     }
   },
   // 生产环境是否生成 sourceMap 文件

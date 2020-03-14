@@ -33,6 +33,9 @@
         <el-menu-item index="3" disabled>
           <span slot="title">导航三</span>
         </el-menu-item> -->
+        <el-menu-item index="3">
+          <span slot="title" @click="refresh">Refresh</span>
+        </el-menu-item>
         <el-menu-item index="4">
           <span slot="title" @click="showUserManualTc">User manual</span>
         </el-menu-item>
@@ -84,6 +87,10 @@ export default {
     //     localStorage.setItem('language', 'en');
     //   }
     // },
+    refresh () {
+      this.$emit('cbRefresh');
+      this.drawer = false;
+    },
     showUserManualTc () {
       this.$refs.userManualRef.show();
     },
