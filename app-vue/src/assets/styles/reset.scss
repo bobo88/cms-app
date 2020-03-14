@@ -41,6 +41,10 @@
   line-height: 40px !important;
 }
 
+.el-drawer__close-btn, .el-dialog__headerbtn {
+  font-size: 30px !important;
+}
+
 .set-tag {
   .el-input {
     &.el-input--mini {
